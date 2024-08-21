@@ -1,0 +1,491 @@
+//variaveis com o x e y do 1º botão
+var Xbotao1, Ybotao1;
+
+//variaveis com o x e y do 2º botão
+var Xbotao2, Ybotao2;
+
+// Definições do jogador 1, sendo posição, altura e largura.
+var Xj1, Yj1, L1, A1;
+
+// Definições do jogador 2, sendo posição, altura e largura.
+var Xj2, Yj2, L2, A2;
+
+//Definições da bola que será utlizada no jogo
+var Xball, Yball, diameter; 
+var XballChange = 5;
+var YballChange = 5;
+
+//Coordenadas do 1º botao
+var Xbotao1, Ybotao1;
+
+//Coordenadas do 2º botao
+var Xbotao2, Ybotao2;
+
+//Coordenadas do 3º botao
+var Xbotao3, Ybotao3;
+
+//Coordenadas botao de voltar
+var Xbvoltar, Ybvoltar;
+
+//Variavel de estado
+var tela;
+
+//Variavel do botão de voltar
+var voltar;
+
+//Variavel da pontuação dos jogadores
+var Pj1 = 0;
+var Pj2 = 0;
+var Pj3 = 0;
+var Pj4 = 0; 
+
+//Variavel da bola na posição inicial
+var Ballposx, Ballposy;
+//Definindo a posição que a bola aparece no jogo
+var  Xball = 290;
+var  Yball = 200;
+var  diameter = 18;
+var  XB0 = 290;
+var  YB0 = 200;
+function preload(){
+  voltar = loadImage ("botaosair.png");
+  fundomenu = loadImage("menu.jpg");
+  fundo = loadImage("campo.jpg");
+  fundoinstrucoes = loadImage("instrucoes.jpg");
+  fundocreditos = loadImage ("creditos.jpg");
+  fundoj1 = loadImage("GameOver1.jpg");
+  fundoj2 = loadImage("GameOver2.jpg");
+  fundoj3 = loadImage("GameOver3.jpg");
+  fundoj4 = loadImage("GameOver4.jpg");
+  musicamenu = loadSound("menu.mp3");
+}
+
+function setup() {
+  createCanvas(580, 400);
+  
+//Posição dos botoes no menu
+  Xbotao1 = 215;
+  Ybotao1 = 80;
+  
+  Xbotao2 = 215;
+  Ybotao2 = 160;
+  
+  Xbotao3 = 215;
+  Ybotao3 = 240;
+  
+//Tela inicial
+  tela = 1;
+  
+//Posição do botao de voltar
+  Xbvoltar = 10;
+  Ybvoltar = 10;
+  
+//Definindo a posição dos jogadores e tamanho
+  Xj1 = 20;
+  Yj1 = 200;
+  L1 = 10;
+  A1 = 80;
+    
+  Xj2 = 550;
+  Yj2 = 200;
+  L2 = 10;
+  A2 = 80;
+  
+
+}
+
+function draw() {
+  
+  if(tela == 1){
+    menu();
+    textSize(50);
+    fill('white');
+    text("THE PONG GAME", Xbotao1-150+10, Ybotao1-30+6);
+  }
+  
+  else if (tela == 2){
+    jogar();
+  }
+  
+  else if (tela == 3){
+    instrucoes();
+  }
+  
+  else if (tela == 4){
+    creditos();
+  }
+  
+  else if (tela==5){
+    ganhador1();
+  }
+  
+  else if (tela==6){
+    ganhador2();
+  }
+  
+  else if (tela==7){
+    fase2();
+  }
+  
+  else if (tela==8){
+    ganhador3();
+  }
+  
+  else if (tela==9){
+    ganhador4();
+  }
+  
+  movePlayer();
+  
+  moveBall();
+  
+  collide();
+  
+}
+
+function menu(){
+  
+//Tela menu
+  background(fundomenu);
+
+//Musica menu
+  playSound();
+ // AE CARAI MISSAO DADA EH MISSAO CUMPRIDA PORRAAAA
+  Xball = XB0;
+  Yball = YB0;
+  Pj1 = 0;
+  Pj2 = 0;
+  Pj3 = 0;
+  Pj4 = 0; 
+//Condição dos botões
+  
+  if(mouseX > Xbotao1 && mouseX < Xbotao1 + 150 &&
+  mouseY > Ybotao1 && mouseY < Ybotao1 + 60){
+    
+    strokeWeight(8);
+    stroke('red');
+    fill('black');
+    rect(Xbotao1, Ybotao1, 150, 60, 15);
+    if(mouseIsPressed){
+      tela = 2;
+    }
+  }
+  
+  if(mouseX > Xbotao2 && mouseX < Xbotao2 + 150 &&
+  mouseY > Ybotao2 && mouseY < Ybotao2 + 60){
+    
+    strokeWeight(8);
+    stroke('green');
+    fill('black');
+    rect(Xbotao2, Ybotao2, 150, 60, 15);
+    if(mouseIsPressed){
+      tela = 3;
+    }
+  }
+  
+  if(mouseX > Xbotao3 && mouseX < Xbotao3 + 150 &&
+  mouseY > Ybotao3 && mouseY < Ybotao3 + 60){
+    
+    strokeWeight(8);
+    stroke('green');
+    fill('black');
+    rect(Xbotao3, Ybotao3, 150, 60, 15);
+    if(mouseIsPressed){
+      tela = 4;
+    }
+  }
+ 
+//Desenho dos botões
+  noStroke();
+  fill(240, 248, 255);
+  rect(Xbotao1, Ybotao1, 150, 60, 15);
+  rect(Xbotao2, Ybotao2, 150, 60, 15);
+  rect(Xbotao3, Ybotao3, 150, 60, 15);
+  
+//Mensagem dos botões
+  noStroke();
+  fill(0);
+  textSize(18);
+  text("JOGAR", Xbotao1+63-20, Ybotao1+30+6);
+
+  fill(0);
+  textSize(18);
+  text("INSTRUÇÕES", Xbotao2+35-20, Ybotao2+30+6);
+
+  fill(0);
+  textSize(18);
+  text("CRÉDITOS", Xbotao3+50-20, Ybotao3+30+6);
+  
+}
+
+function jogar(){
+  
+  //Inicialização do jogo
+  background(fundo);
+  
+  image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+  
+  //Desenho dos jogadores
+  strokeWeight(2);
+  fill(280, 0, 0);
+  rect(Xj1, Yj1, L1, A1);
+  
+  strokeWeight(2);
+  fill(0, 0, 255);
+  rect(Xj2, Yj2, L2, A2);
+  
+  //Desenhando a bola do jogo
+  fill(255);
+  circle(Xball, Yball, diameter);
+  
+  
+  //Mover a bola de forma autonoma
+  Xball += XballChange;
+  Yball += YballChange;
+  
+    if(Xball < 10){
+    Pj2++;
+  }
+  
+  if(Xball > 570){
+    Pj1++;
+  }
+  
+  if(Pj1==3){
+    tela = 5;
+  }
+  
+  if(Pj2==3){
+    tela = 6;
+  }
+  
+  textSize(70);
+  fill('red');
+  text(Pj1, 110, 225);
+  fill('blue');
+  text(Pj2, 435, 225);
+  
+}
+
+//Permitindo a movimentação dos jogadores 1 e 2
+function movePlayer(){
+  
+  if(keyIsDown(87)){
+    Yj1 = Yj1 - 5;
+  }
+    if(keyIsDown(83)){
+    Yj1 = Yj1 + 5;
+  }
+      if(keyIsDown(LEFT_ARROW)){
+    Yj2 = Yj2 - 5;
+  }
+      if(keyIsDown(RIGHT_ARROW)){
+    Yj2 = Yj2 + 5;
+  }
+}
+
+//Permitindo a movimentação da bola
+function moveBall(){
+  
+  if(Xball < diameter/2 || Xball > width - 0.5*diameter){
+    XballChange *= -1;
+  }
+  
+  if(Yball < diameter/2 || Yball > height - diameter){
+    YballChange *= -1;
+  }
+}
+
+//Criando a colisão da bola com os jogadores
+function collide(){
+  if((Xball > Xj1 && Xball < Xj1 + L1) && (Yball + (diameter/2) >= Yj1)) {
+    
+    XballChange *= -1;
+    
+  }
+  
+  if((Xball > Xj2 && Xball < Xj2 + L2) && (Yball + (diameter/2) >= Yj2)) {
+    
+    XballChange *= -1;
+    
+  }
+  
+    if((Xball > 290 && Xball < 290 + 10) && (Yball + (diameter/2) >= 80)) {
+    
+    XballChange *= -1;
+    
+  }
+  
+      if((Xball > 290 && Xball < 290 + 10) && (Yball + (diameter/2) >= 250)) {
+    
+    XballChange *= -1;
+    
+  }
+}
+
+function instrucoes(){
+  background(fundoinstrucoes);
+    image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+      }
+    }
+  }
+
+function creditos(){
+  background(fundocreditos);
+  image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+}
+
+function ganhador1(){
+  
+  background(fundoj1);
+  
+
+  if(mouseX > 400 && mouseX < 555 &&
+  mouseY > 350 && mouseY < 380){
+    
+    strokeWeight(4);
+    stroke('white');
+    noFill();
+    rect(400, 350, 155, 30, 10);
+    
+    if(mouseIsPressed){
+      tela = 7;
+    }
+  }
+  
+  image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+}
+
+function ganhador2 (){
+  
+  background(fundoj2);
+  
+  if(mouseX > 400 && mouseX < 555 &&
+  mouseY > 350 && mouseY < 380){
+    
+    strokeWeight(4);
+    stroke('white');
+    noFill();
+    rect(400, 350, 155, 30, 10);
+    
+    if(mouseIsPressed){
+      tela = 7;
+    }
+  }
+  
+  image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+}
+
+function fase2(){
+  
+  //Inicialização do jogo
+  background(fundo);
+  
+  image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+  
+  //Desenho dos jogadores
+  strokeWeight(2);
+  fill(280, 0, 0);
+  rect(Xj1, Yj1, L1, A1);
+  
+  strokeWeight(2);
+  fill(0, 0, 255);
+  rect(Xj2, Yj2, L2, A2);
+  
+  //Desenhando a bola do jogo
+  fill(255);
+  circle(Xball, Yball, diameter);
+  
+  
+  //Mover a bola de forma autonoma
+  Xball += XballChange;
+  Yball += YballChange;
+  
+  //Desenho dos obstáculos
+  fill('black');
+  rect(290, 80, 10, 100);
+  rect(290, 250, 10, 100);
+  
+  if(Xball < 10){
+    Pj4++;
+  }
+  
+  if(Xball > 570){
+    Pj3++;
+  }
+  
+  if(Pj3==5){
+    tela = 8;
+  }
+  
+  if(Pj4==5){
+    tela = 9;
+  }
+  
+  textSize(70);
+  fill('red');
+  text(Pj3, 110, 225);
+  fill('blue');
+  text(Pj4, 435, 225);
+
+}
+
+function ganhador3 (){
+  
+  background(fundoj3);
+  
+    image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+}
+
+function ganhador4 (){
+  
+  background(fundoj4);
+  
+    image (voltar, Xbvoltar, Ybvoltar, 50, 50); 
+  if (mouseX>10&&mouseX<Xbvoltar+50&&mouseY>10&&mouseY<Ybvoltar+50){
+    if (mouseIsPressed){
+      tela = 1;
+    }
+  }
+}
+
+
+function playSound(){
+  if(!musicamenu.isPlaying()){
+    musicamenu.setVolume(0.2);
+    musicamenu.play();
+  }
+}
